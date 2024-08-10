@@ -10,13 +10,11 @@ const App = () => {
 
   const handleSaveNote = (content) => {
     if (noteToEdit) {
-      // Editar nota existente
       setNotes(notes.map(note =>
         note.id === noteToEdit.id ? { ...note, content } : note
       ));
       setNoteToEdit(null);
     } else {
-      // Agregar nueva nota
       const newNote = {
         id: uuidv4(),
         content
@@ -35,8 +33,8 @@ const App = () => {
   };
 
   return (
-    <div className="App">
-      <h1>Note Manager</h1>
+    <div className="container">
+      <h1 className="center-align">Note Manager</h1>
       <NoteForm onSave={handleSaveNote} noteToEdit={noteToEdit} />
       <NoteList notes={notes} onDelete={handleDeleteNote} onEdit={handleEditNote} />
     </div>

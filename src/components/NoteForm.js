@@ -22,8 +22,22 @@ const NoteForm = ({ onSave, noteToEdit }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <textarea value={note} onChange={handleChange} required />
-      <button type="submit">{noteToEdit ? 'Update Note' : 'Add Note'}</button>
+      <div className="input-field">
+        <textarea
+          id="note"
+          className="materialize-textarea"
+          value={note}
+          onChange={handleChange}
+          required
+        />
+        <label htmlFor="note" className={note ? "active" : ""}>
+          {noteToEdit ? 'Edit Note' : 'New Note'}
+        </label>
+      </div>
+      <button className="btn waves-effect waves-light" type="submit">
+        {noteToEdit ? 'Update Note' : 'Add Note'}
+        <i className="material-icons right">send</i>
+      </button>
     </form>
   );
 };
