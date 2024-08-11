@@ -11,24 +11,50 @@ const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [token, setToken] = useState('');
 
-  // Agrega funciones de manejo de notas aquí...
+  const handleEditNote = (noteId) => {
+    const note = notes.find(n => n.id === noteId);
+    setNoteToEdit(note);
+  };
+
+  const handleSaveNote = (content) => {
+    if (noteToEdit) {
+      // Lógica para actualizar una nota existente
+      setNotes(notes.map(note =>
+        note.id === noteToEdit.id ? { ...note, content } : note
+      ));
+      setNoteToEdit(null);  // Resetear después de la edición
+    } else {
+      // Lógica para agregar una nueva nota
+      const newNote = { id: Date.now(), content };
+      setNotes([...notes, newNote]);
+    }
+  };
 
   return (
-    <Router>
+    <Router basename="/react-notes-app">  {/* Añadir el basename aquí */}
       <Routes>
-        <Route path="/" element={isAuthenticated ? <NoteManager /> : <Navigate to="/login" />} />
-        <Route path="/login" element={<Login onLogin={handleLogin} />} />
-        <Route path="/register" element={<Register onRegister={handleRegister} />} />
+        <Route path="/" element={isAuthenticated ? (
+          <NoteManager
+            notes={notes}
+            onSaveNote={handleSaveNote}
+            onEditNote={handleEditNote}
+            noteToEdit={noteToEdit}
+          />
+        ) : (
+          <Navigate to="/login" />
+        )} />
+        <Route path="/login" element={<Login onLogin={() => setIsAuthenticated(true)} />} />
+        <Route path="/register" element={<Register onRegister={() => setIsAuthenticated(true)} />} />
       </Routes>
     </Router>
   );
 };
 
-const NoteManager = ({ notes, onSaveNote, onDeleteNote, onEditNote }) => (
+const NoteManager = ({ notes, onSaveNote, onEditNote, noteToEdit }) => (
   <>
     <h1>Note Manager</h1>
     <NoteForm onSave={onSaveNote} noteToEdit={noteToEdit} />
-    <NoteList notes={notes} onDelete={onDeleteNote} onEdit={onEditNote} />
+    <NoteList notes={notes} onEdit={onEditNote} />
   </>
 );
 
