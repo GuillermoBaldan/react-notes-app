@@ -2,7 +2,7 @@
   "name": "react-notes-app",
   "version": "0.1.0",
   "private": true,
-  "homepage" : "https://GuillermoBaldan.github.io/react-notes-app",
+  "homepage": "https://GuillermoBaldan.github.io/react-notes-app",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -10,6 +10,7 @@
     "materialize-css": "^1.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.0",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
