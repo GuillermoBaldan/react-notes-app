@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import NoteList from './components/NoteList';
 import NoteForm from './components/NoteForm';
@@ -6,55 +6,34 @@ import Login from './components/Login';
 import Register from './components/Register';
 
 const App = () => {
-  const [notes, setNotes] = useState([]);
-  const [noteToEdit, setNoteToEdit] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [token, setToken] = useState('');
+  const [notes, setNotes] = useState([]);  // Asegúrate de que notes está inicializado como un array vacío
 
-  const handleEditNote = (noteId) => {
-    const note = notes.find(n => n.id === noteId);
-    setNoteToEdit(note);
-  };
-
-  const handleSaveNote = (content) => {
-    if (noteToEdit) {
-      // Lógica para actualizar una nota existente
-      setNotes(notes.map(note =>
-        note.id === noteToEdit.id ? { ...note, content } : note
-      ));
-      setNoteToEdit(null);  // Resetear después de la edición
-    } else {
-      // Lógica para agregar una nueva nota
-      const newNote = { id: Date.now(), content };
-      setNotes([...notes, newNote]);
-    }
+  const handleRegister = (username, password) => {
+    console.log('Registering', username, password);
+    setIsAuthenticated(true); // Actualiza el estado de autenticación
   };
 
   return (
-    <Router basename="/react-notes-app">  {/* Añadir el basename aquí */}
+    <Router basename="/react-notes-app">
       <Routes>
         <Route path="/" element={isAuthenticated ? (
-          <NoteManager
-            notes={notes}
-            onSaveNote={handleSaveNote}
-            onEditNote={handleEditNote}
-            noteToEdit={noteToEdit}
-          />
+          <NoteManager notes={notes} />
         ) : (
           <Navigate to="/login" />
         )} />
         <Route path="/login" element={<Login onLogin={() => setIsAuthenticated(true)} />} />
-        <Route path="/register" element={<Register onRegister={() => setIsAuthenticated(true)} />} />
+        <Route path="/register" element={<Register onRegister={handleRegister} />} />
       </Routes>
     </Router>
   );
 };
 
-const NoteManager = ({ notes, onSaveNote, onEditNote, noteToEdit }) => (
+const NoteManager = ({ notes }) => (
   <>
     <h1>Note Manager</h1>
-    <NoteForm onSave={onSaveNote} noteToEdit={noteToEdit} />
-    <NoteList notes={notes} onEdit={onEditNote} />
+    <NoteForm />
+    <NoteList notes={notes} />  {/* Pasa notes al componente NoteList */}
   </>
 );
 

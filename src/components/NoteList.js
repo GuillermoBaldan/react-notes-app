@@ -1,12 +1,15 @@
 import React from 'react';
 
-const NoteList = ({ notes, onEdit }) => {
+const NoteList = ({ notes }) => {
+  if (!notes || notes.length === 0) {
+    return <p>No notes available</p>;
+  }
+
   return (
     <ul>
       {notes.map(note => (
         <li key={note.id}>
-          <p>{note.content}</p>
-          <button onClick={() => onEdit(note.id)}>Edit</button>
+          {note.content}
         </li>
       ))}
     </ul>
